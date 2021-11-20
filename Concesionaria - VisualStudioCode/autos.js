@@ -18,7 +18,7 @@ let autos = [
    color: 'Blanco',//string
    cuotas: 14,//number
    anio:2019,//number
-   patente: 'JJK116',//string
+   patente: 'JJK120',//string
    vendido: false//boolean
    },
    {
@@ -29,7 +29,7 @@ let autos = [
     color: 'Blanco',//string
     cuotas: 14,//number
     anio:2019,//number
-    patente: 'JJK116',//string
+    patente: 'JJK119',//string
     vendido: true//boolean
     },
     {
@@ -40,7 +40,7 @@ let autos = [
     color: 'Blanco',//string
     cuotas: 14,//number
     anio:2019,//number
-    patente: 'JJK116',//string
+    patente: 'JJK117',//string
     vendido: false//boolean
     },
     {
@@ -57,4 +57,7 @@ let autos = [
 ]
 
 module.exports = autos;
-//console.log(autos)
+console.log(autos)
+// crear archivo json para el array de autos
+// metodo requerirAutos que parsee el json de autos y exportarlo.
+//ver metodo para escribir el json cuando un auto es vendido.

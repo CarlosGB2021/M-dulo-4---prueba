@@ -1,28 +1,45 @@
 let autos = require('./autos.js');
 let persona = require('./persona');
+
 const concesionaria = {
-   autos: autos,
+   autos: autos, //desario requerirAutos()
    persona: persona,
 
    buscarAuto: function(patente){
+       //reciba por parámetro la patente y devuelva el auto al cual le corresponde.
+       //En caso de no encontrar el mismo, deberá retornar null.
         let encontrado = null//funciona como bandera, si encuentra, devuelve el elemento, sino, se mantiene en null.
-        autos.forEach(function(elemento){//itera por cada objeto del array
+        autos.forEach(function(elemento){//itera por cada objeto del array - ver find
           if(elemento.patente == patente){//compara las patentes de cada objeto
               encontrado = elemento//asigna el objeto encontrado
+              //falta crear el nuevo array de autos para escribirlo en autos.js, pero ojo, es un array de objetos
+              //autos.push(encontrado)
             }
         })
+        //console.log('Auto Encontrado: ',encontrado)
+        console.log('Autos: ',autos)
 
         return encontrado// devuelve un objeto o null.
     },
 
     venderAuto: function(patente){
+        //recibe la patente y, en caso de encontrar al automóvil, le asigna el estado de vendido.
         let encontrado = this.buscarAuto(patente)
         if(encontrado != null){
-          encontrado.vendido = true
+          encontrado.vendido = true// solo esta modificando la copia del objeto, no el archivo autos.js
+          console.log(encontrado)
+          //crear un nuevo archivo autos con el objeto nuevo y 
+          //ocupar writeFileSync(archivo, data) para re-escribir autos.js
         }   
     },
-
-    autosParaLaVenta: function(){//poder tener la lista de autos para la venta.
+    /*venderAuto: function(patente){// funciona en pg, pero aca no cambia el atributo vendido a true.
+              let encontrado = this.buscarAuto(patente)
+              if(encontrado != null){
+                encontrado.vendido = true
+                }   
+    },*/
+    autosParaLaVenta: function(){
+        //poder tener la lista de autos para la venta.
         //no deberían de aparecer los autos que ya fueron vendidos.
         let listaVenta = autos.filter(function(elemento){
             if (elemento.vendido == false){
@@ -31,13 +48,7 @@ const concesionaria = {
         })
         return listaVenta
     },
-    /*
-    autosParaLaVenta : function (){
-        let lista = this.autos();
-        let resultado = lista.filter((item)=> {return item.vendido == false} );
-        return resultado
-    }*/
-
+    
     autosNuevos: function(){
         let disponiblesVenta = this.autosParaLaVenta()
         let autos0Km = disponiblesVenta.filter(function(elemento){
@@ -48,10 +59,10 @@ const concesionaria = {
         return autos0Km
     },
 
-    listaDeVentas: function(){//devuelve una lista que contiene el precio de venta de cada auto vendido
+    listaDeVentas: function(){
+        //devuelve una lista que contiene el precio de venta de cada auto vendido
         //Recordá utilizar el this para llamar a una funcionalidad dentro del mismo objeto literal.
         //La función debe retornar un array de números.
-    
         let autosVendidos = autos.filter(function(elemento){
             if(elemento.vendido == true){
                 return elemento
@@ -64,7 +75,8 @@ const concesionaria = {
         return vendidos
     },
 
-    totalDeVentas: function(){//devuelva la sumatoria del valor de todas las ventas realizadas. 
+    totalDeVentas: function(){
+        //devuelva la sumatoria del valor de todas las ventas realizadas. 
         //Acá el único requerimiento técnico explícito es que utilices la función reduce
         let totalVentas = this.listaDeVentas().reduce(function(acumulador, elemento){
             return acumulador + elemento
@@ -73,7 +85,8 @@ const concesionaria = {
         return totalVentas
     },
 
-    puedeComprar: function(auto,persona){// reciba por parámetro un auto y una persona y devuelva true si la misma puede comprar el auto.
+    puedeComprar: function(auto,persona){
+    // reciba por parámetro un auto y una persona y devuelva true si la misma puede comprar el auto.
     //Las personas solo sacan los autos en cuotas y tomando dos factores como condición de compra.
     // Una es el costo total: si el total de un auto excede lo que la persona considera caro, no va a comprar el auto. 
     //Otra condición es su capacidad de pago en cuotas: si la capacidad de pago en cuotas supera al costo de la cuota, va a poder pagarlo. 
@@ -84,11 +97,11 @@ const concesionaria = {
         if(costoTotal >= 0 && capacidadPago >= 0){
             puedeComprar = true
         }
-        if(puedeComprar){
+        /*if(puedeComprar){
             console.log ('puede comprar')
         } else {
             console.log('no puede comprar')
-        }
+        }*/
         return puedeComprar
     },
 
@@ -106,11 +119,12 @@ const concesionaria = {
                 disponibles.push(elemento)
             }
         })
-        console.log('autos disponibles', autosDisponiblesVenta)
+        console.log('Autos que puede comprar: ', autosDisponiblesVenta)
         return disponibles
     }
 }
-
-concesionaria.listaDeVentas()
-concesionaria.puedeComprar(autos[0],persona);
-concesionaria.autosQuePuedeComprar(persona);
+//concesionaria.buscarAuto('JJK117');
+concesionaria.venderAuto('JJK117');
+concesionaria.listaDeVentas();
+//concesionaria.puedeComprar(autos[0],persona);
+//concesionaria.autosQuePuedeComprar(persona);
